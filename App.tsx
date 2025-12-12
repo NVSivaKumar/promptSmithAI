@@ -15,6 +15,7 @@ import { Hero } from './components/ui/animated-hero';
 import CyberMatrixHero from './components/ui/cyber-matrix-hero';
 import LoginPage from './components/auth/LoginPage';
 import SignupPage from './components/auth/SignupPage';
+import ForgotPasswordPage from './components/auth/ForgotPasswordPage';
 
 const HISTORY_KEY = 'promptsmith_history_v1';
 const SAVED_KEY = 'promptsmith_saved_v1';
@@ -407,7 +408,7 @@ const MainAppContent: React.FC = () => {
 // Routing Wrapper Component
 const AppContent: React.FC = () => {
     const { user, isLoading } = useAuth();
-    const [authView, setAuthView] = useState<'login' | 'signup'>('login');
+    const [authView, setAuthView] = useState<'login' | 'signup' | 'forgot-password'>('login');
 
     // Ensure we go back to login screen on logout
     useEffect(() => {
@@ -430,9 +431,14 @@ const AppContent: React.FC = () => {
                 <CyberMatrixHero className="fixed inset-0 z-0" />
                 <div className="relative z-10 w-full animate-in fade-in zoom-in-95 duration-500">
                     {authView === 'login' ? (
-                        <LoginPage onNavigateToSignup={() => setAuthView('signup')} />
-                    ) : (
+                        <LoginPage 
+                            onNavigateToSignup={() => setAuthView('signup')} 
+                            onNavigateToForgotPassword={() => setAuthView('forgot-password')}
+                        />
+                    ) : authView === 'signup' ? (
                         <SignupPage onNavigateToLogin={() => setAuthView('login')} />
+                    ) : (
+                        <ForgotPasswordPage onNavigateToLogin={() => setAuthView('login')} />
                     )}
                 </div>
             </div>
